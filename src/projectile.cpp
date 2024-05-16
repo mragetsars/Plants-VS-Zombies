@@ -39,9 +39,9 @@ FloatRect Projectile::get_rect(){
 
 void Projectile::set_projectile_texture(){
     if(type == Pea)
-        if (!texture.loadFromFile(PICS_PATH + "Pea.png"))
+        if (!texture.loadFromFile(PICS_PATH + "v_Pea.png"))
             debug("failed to load player texture");
     if(type == Snowpea)
-        if (!texture.loadFromFile(PICS_PATH + "Snowpea.png"))
+        if (!texture.loadFromFile(PICS_PATH + "v_Snowpea.png"))
             debug("failed to load player texture");
 }

@@ -10,7 +10,7 @@ public:
     void render(RenderWindow &window);
     bool check_start();
     bool check_exit();
-    bool cm;
+    bool check_mode();
 private:
     Texture StartKeyTexture;
     Sprite StartKeySprite;
@@ -18,4 +18,7 @@ private:
     Texture ExitKeyTexture;
     Sprite ExitKeySprite;
     bool ExitKey;
+    Texture ModeKeyTexture;
+    Sprite ModeKeySprite;
+    bool ModeKey;
 };

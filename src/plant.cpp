@@ -78,49 +78,49 @@ bool Plant::handle_mouse_press(Vector2i mousePos, Plant_Type input_type){
 void Plant::set_plant_texture(){
     switch (type){
     case (EmptyPlant):
-            if (!texture.loadFromFile(PICS_PATH + "EmptyPlant.png"))
+            if (!texture.loadFromFile(PICS_PATH + "p_EmptyPlant.png"))
                 debug("failed to load player texture");
         break;
     case (SelectedPlant):
-            if (!texture.loadFromFile(PICS_PATH + "SelectedPlant.png"))
+            if (!texture.loadFromFile(PICS_PATH + "p_SelectedPlant.png"))
                 debug("failed to load player texture");
         break;
     case (PeaShooter):
         if(action){
-            if (!texture.loadFromFile(PICS_PATH + "PeaShooter(attack).png"))
+            if (!texture.loadFromFile(PICS_PATH + "p_PeaShooter(attack).png"))
                 debug("failed to load player texture");
         }else{
-            if (!texture.loadFromFile(PICS_PATH + "PeaShooter(idle).png"))
+            if (!texture.loadFromFile(PICS_PATH + "p_PeaShooter(idle).png"))
                 debug("failed to load player texture");
         }
         break;
     case (SnowpeaShooter):
         if(action){
-            if (!texture.loadFromFile(PICS_PATH + "SnowpeaShooter(attack).png"))
+            if (!texture.loadFromFile(PICS_PATH + "p_SnowpeaShooter(attack).png"))
                 debug("failed to load player texture");
         }else{
-            if (!texture.loadFromFile(PICS_PATH + "SnowpeaShooter(idle).png"))
+            if (!texture.loadFromFile(PICS_PATH + "p_SnowpeaShooter(idle).png"))
                 debug("failed to load player texture");
         }
         break;
     case (SunFlower):
         if(action){
-            if (!texture.loadFromFile(PICS_PATH + "SunFlower(glow).png"))
+            if (!texture.loadFromFile(PICS_PATH + "p_SunFlower(glow).png"))
                 debug("failed to load player texture");
         }else{
-            if (!texture.loadFromFile(PICS_PATH + "SunFlower(idle).png"))
+            if (!texture.loadFromFile(PICS_PATH + "p_SunFlower(idle).png"))
                 debug("failed to load player texture");
         }
         break;
     case (Wallnut):
         if(false){
-            if (!texture.loadFromFile(PICS_PATH + "Wallnut(verycracked).png"))
+            if (!texture.loadFromFile(PICS_PATH + "p_Wallnut(verycracked).png"))
                 debug("failed to load player texture");
         }else if(false){
-            if (!texture.loadFromFile(PICS_PATH + "Wallnut(cracked).png"))
+            if (!texture.loadFromFile(PICS_PATH + "p_Wallnut(cracked).png"))
                 debug("failed to load player texture");
         }else if(true){
-            if (!texture.loadFromFile(PICS_PATH + "Wallnut(idle).png"))
+            if (!texture.loadFromFile(PICS_PATH + "p_Wallnut(idle).png"))
                 debug("failed to load player texture");
         }
         break;

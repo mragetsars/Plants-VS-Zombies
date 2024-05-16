@@ -4,7 +4,7 @@ System::System(int width, int height) {
   window.create(VideoMode(width, height), "PVZ", Style::Default);
   window.setFramerateLimit(FRAME_RATE);
   state = MENU;
-  screenmode = Day;
+  mode = Day;
   set_background_texture();
   set_gameover_texture();
   set_menu_texture();
@@ -101,14 +101,14 @@ void System::handle_mouse_press(Event ev) {
       game_handler = new Game_Handler();
       state = GAME;
     }
-    if(menu_handler->check_exit()){
-      // state = EXIT;
-      if(screenmode == Day)
-        screenmode = Night;
-      else if(screenmode == Night)
-        screenmode = Day;
+    if(menu_handler->check_exit())
+      state = EXIT;
+    if(menu_handler->check_mode()){
+      if(mode == Day)
+        mode = Night;
+      else if(mode == Night)
+        mode = Day;
       set_background_texture();
-      set_gameover_texture();
       set_menu_texture();
     }
     break;
@@ -120,31 +120,31 @@ void System::handle_mouse_press(Event ev) {
 }
 
 void System::set_background_texture(){
-  if(screenmode == Day)
-    if (!backgroundTexture.loadFromFile(PICS_PATH + "DayBackground.png")) {
+  if(mode == Day)
+    if (!backgroundTexture.loadFromFile(PICS_PATH + "g_DayBackground.png")) {
       debug("failed to load image");
     }
-  if(screenmode == Night)
-    if (!backgroundTexture.loadFromFile(PICS_PATH + "NightBackground.png")) {
+  if(mode == Night)
+    if (!backgroundTexture.loadFromFile(PICS_PATH + "g_NightBackground.png")) {
       debug("failed to load image");
     }
   backgroundSprite.setTexture(backgroundTexture);
 }
 
 void System::set_menu_texture(){
-  if(screenmode == Day)
-    if (!menuTexture.loadFromFile(PICS_PATH + "DayMenu.png")) {
+  if(mode == Day)
+    if (!menuTexture.loadFromFile(PICS_PATH + "m_DayMenu.png")) {
       debug("failed to load image");
     }
-  if(screenmode == Night)
-    if (!menuTexture.loadFromFile(PICS_PATH + "NightMenu.png")) {
+  if(mode == Night)
+    if (!menuTexture.loadFromFile(PICS_PATH + "m_NightMenu.png")) {
       debug("failed to load image");
     }
   menuSprite.setTexture(menuTexture);
 }
 
 void System::set_gameover_texture(){
-  if (!gameoverTexture.loadFromFile(PICS_PATH + "GameOverScreen.png")) {
+  if (!gameoverTexture.loadFromFile(PICS_PATH + "g_GameOverScreen.png")) {
     debug("failed to load image");
   }
   gameoverSprite.setTexture(gameoverTexture);

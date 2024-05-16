@@ -33,10 +33,10 @@ FloatRect Zombie::get_rect(){
 
 void Zombie::set_zombie_texture(){
     if(type == Normal1)
-        if (!texture.loadFromFile(PICS_PATH + "AZombie.png"))
+        if (!texture.loadFromFile(PICS_PATH + "z_AZombie.png"))
             debug("failed to load zombie texture");
     if(type == Normal2)
-        if (!texture.loadFromFile(PICS_PATH + "BZombie.png"))
+        if (!texture.loadFromFile(PICS_PATH + "z_BZombie.png"))
             debug("failed to load zombie texture");
 }
 

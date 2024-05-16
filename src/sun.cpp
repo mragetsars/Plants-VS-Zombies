@@ -44,6 +44,6 @@ bool Sun::is_out(){
 }
 
 void Sun::set_sun_texture(){
-    if (!texture.loadFromFile(PICS_PATH + "Sun.png"))
+    if (!texture.loadFromFile(PICS_PATH + "v_Sun.png"))
         debug("failed to load sun texture");
 }

@@ -51,21 +51,21 @@ void Card::render(RenderWindow &window){
 }
 
 void Card::set_card_texture(){
-    if (!selected_texture.loadFromFile(PICS_PATH + "SelectedCard.png"))
+    if (!selected_texture.loadFromFile(PICS_PATH + "c_SelectedCard.png"))
         debug("failed to load player texture");
-    if (!inactive_texture.loadFromFile(PICS_PATH + "InactiveCard.png"))
+    if (!inactive_texture.loadFromFile(PICS_PATH + "c_InactiveCard.png"))
         debug("failed to load player texture");
     if(type == PeaShooterCard)
-        if (!texture.loadFromFile(PICS_PATH + "PeaShooterCard.png"))
+        if (!texture.loadFromFile(PICS_PATH + "c_PeaShooterCard.png"))
             debug("failed to load player texture");
     if(type == SnowpeaShooterCard)
-        if (!texture.loadFromFile(PICS_PATH + "SnowpeaShooterCard.png"))
+        if (!texture.loadFromFile(PICS_PATH + "c_SnowpeaShooterCard.png"))
             debug("failed to load player texture");
     if(type == SunFlowerCard)
-        if (!texture.loadFromFile(PICS_PATH + "SunFlowerCard.png"))
+        if (!texture.loadFromFile(PICS_PATH + "c_SunFlowerCard.png"))
             debug("failed to load player texture");
     if(type == WallnutCard)
-        if (!texture.loadFromFile(PICS_PATH + "WallnutCard.png"))
+        if (!texture.loadFromFile(PICS_PATH + "c_WallnutCard.png"))
             debug("failed to load player texture");
 }
 

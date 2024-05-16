@@ -12,7 +12,7 @@ enum State {
   EXIT
 };
 
-enum ScreenMode{
+enum Mode{
   Day,
   Night
 };
@@ -26,6 +26,7 @@ public:
 
 private:
   State state;
+  Mode mode;
   Texture backgroundTexture;
   Sprite backgroundSprite;
   void set_background_texture();
@@ -42,5 +43,4 @@ private:
   void update();
   void render();
   void handle_mouse_press(Event ev);
-  ScreenMode screenmode;
 };

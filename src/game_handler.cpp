@@ -13,12 +13,12 @@ Game_Handler::Game_Handler (){
 }
 
 Game_Handler::~Game_Handler(){
-    for(auto v : Projectiles){
+    for(auto v : Projectiles)
         delete v;
-    }
-    for(auto z : Zombies){
+    for(auto z : Zombies)
         delete z;
-    }
+    for(auto s : Suns)
+        delete s;
 }
 
 void Game_Handler::update(Vector2i mousePos){
