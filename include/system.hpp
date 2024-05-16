@@ -1,17 +1,18 @@
 #pragma once
 
 #include "global.hpp"
-#include "player.hpp"
-#include "projectile.hpp"
+// #include "plants.hpp"
+// #include "projectile.hpp"
 #include "handler.hpp"
+// #include "card.hpp"
 
 enum State {
   IN_GAME,
-  PAUSE_MENU,
-  MAIN_MENU,
-  VICTORY_SCREEN,
-  GAMEOVER_SCREEN,
-  EXIT
+  // PAUSE_MENU,
+  // MAIN_MENU,
+  // VICTORY_SCREEN,
+  // GAMEOVER_SCREEN,
+  // EXIT
 };
 
 class System {
@@ -24,7 +25,6 @@ public:
 private:
   State state;
   Handler* handler;
-  Player* player;
   Texture backgroundTexture;
   Sprite backgroundSprite;
   Music music;

@@ -1,12 +1,17 @@
 #include "projectile.hpp"
 
-Projectile::Projectile(Vector2f p){
-    pos = p;
-    if (!texture.loadFromFile(PICS_PATH + "tir.png")) {
-        debug("failed to load player texture");
-    }
-    sprite.setTexture(texture);
-    sprite.setScale(0.7, 0.7);
+Projectile::Projectile(Vector2f p, Projectile_Type input_type){
+        type = input_type;
+        pos = p;
+        set_projectile_texture();
+        IntRect rect;
+        rect.top = 2;
+        rect.left = 2;
+        rect.width = 21;
+        rect.height = 17;
+        sprite.setTextureRect(rect);
+        sprite.setTexture(texture);
+        sprite.setScale(0.7, 0.7);
 }
 
 Projectile::~Projectile(){
@@ -28,4 +33,17 @@ bool Projectile::is_out(){
 
 FloatRect Projectile::get_rect(){
     return sprite.getGlobalBounds();
+}
+
+void Projectile::set_projectile_texture(){
+    if(type == Pea){
+        if (!texture.loadFromFile(PICS_PATH + "Pea.png")) {
+            debug("failed to load player texture");
+        }
+    }
+    if(type == Snowpea){
+        if (!texture.loadFromFile(PICS_PATH + "Snowpea.png")) {
+            debug("failed to load player texture");
+        }
+    }
 }

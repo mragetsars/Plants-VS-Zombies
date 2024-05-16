@@ -20,7 +20,9 @@ using namespace std;
 const float PI = acos(-1);
 const int WIDTH = 1400;
 const int HEIGHT = 600;
-const int FRAME_RATE = 144;
+const int FRAME_RATE = 160;
+const int FARM_LINES[5] = {90, 190, 290, 390, 490};
+const int FARM_COLUMNs[9] = {255, 330, 412, 491, 570, 649, 729, 807, 887};
 const string PICS_PATH = "./files/pics/", AUDIO_PATH = "./files/audio/",
              FONTS_PATH = "./files/fonts/";
 const Color BLUE = Color(50, 115, 220);

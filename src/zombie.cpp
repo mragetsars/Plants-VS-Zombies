@@ -1,16 +1,17 @@
 #include "zombie.hpp"
 
-Zombie::Zombie(Vector2f p){
+Zombie::Zombie(Vector2f p, Zombie_Type input_type){
+    type = input_type;
     pos = p;
-    if (!texture.loadFromFile(PICS_PATH + "zombie.png")) {
-        debug("failed to load zombie texture");
-    }
-    sprite.setTexture(texture);
-    sprite.setScale(1.2, 1.2);  
+    set_zombie_texture();
     IntRect rect;
-    rect.width = 34; 
-    rect.height = 62;
+    rect.top = 2;
+    rect.left = 2;
+    rect.width = 43; 
+    rect.height = 53;
+    sprite.setTexture(texture);
     sprite.setTextureRect(rect);
+    sprite.setScale(2, 2);
 }
        
 Zombie::~Zombie(){
@@ -22,20 +23,38 @@ void Zombie::render(RenderWindow &window){
 }
 
 void Zombie::update(){
-    Time elapsed = clock.getElapsedTime();
-    if(elapsed.asMilliseconds() >= 300){
-        clock.restart();
-        cur_rect = (cur_rect + 1) % 3;
-        IntRect rect;
-        rect.width = 34; 
-        rect.height = 62;
-        rect.left = poses[cur_rect];
-        sprite.setTextureRect(rect);
-    }
+    handel_animation();
     pos.x -= speed;
     sprite.setPosition(pos);
 }
 
 FloatRect Zombie::get_rect(){
     return sprite.getGlobalBounds();
+}
+
+void Zombie::set_zombie_texture(){
+    if(type == Normal1){
+        if (!texture.loadFromFile(PICS_PATH + "AZombie.png")) {
+            debug("failed to load zombie texture");
+        }
+    }
+    else if(type == Normal2){
+        if (!texture.loadFromFile(PICS_PATH + "BZombie.png")) {
+            debug("failed to load zombie texture");
+        }
+    }
+}
+
+void Zombie::handel_animation(){
+    Time animationelapsed = animationclock.getElapsedTime();
+    if(animationelapsed.asMilliseconds() >= 100){
+        animationclock.restart();
+        cur_rect = (cur_rect + 1) % 5;
+        IntRect rect;
+        rect.top = 2;
+        rect.left = animation_rect[cur_rect];
+        rect.width = 43; 
+        rect.height = 53;
+        sprite.setTextureRect(rect);
+    }
 }
