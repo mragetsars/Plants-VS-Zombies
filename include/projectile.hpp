@@ -4,7 +4,7 @@
 
 enum Projectile_Type {
   Pea,
-  Icepea,
+  Snowpea,
 };
 
 class Projectile{
@@ -17,7 +17,7 @@ public:
     FloatRect get_rect();
 private:
     Projectile_Type type;
-    const int speed = 4;
+    const int speed = 1;
     Texture texture;
     Sprite sprite;
     Vector2f pos;

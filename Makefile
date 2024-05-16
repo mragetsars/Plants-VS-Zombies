@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -std=c++17 -Wall -Wextra -I./include #-fsanitize=address -fsanitize=undefined
+CXXFLAGS = -std=c++17 -Wall -Wextra -I./include -fsanitize=address -fsanitize=undefined
 LFLAGS = -L./files -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 SRCDIR = src
 OBJDIR = obj
@@ -10,7 +10,7 @@ MEDIA_PATH = ./files/
 SOURCES := $(wildcard $(SRCDIR)/*.cpp)
 OBJECTS := $(patsubst $(SRCDIR)/%.cpp, $(OBJDIR)/%.o, $(SOURCES))
 
-# all: $(EXECUTABLE)
+all: $(EXECUTABLE)
 
 $(EXECUTABLE): $(OBJECTS)
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LFLAGS)

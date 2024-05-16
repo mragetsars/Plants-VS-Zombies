@@ -21,7 +21,6 @@ private:
     Sprite sprite;
     Vector2f pos;
     const float speed = 0.25;
-    int animation_rect[5] = {3, 107, 159, 211, 315};
     int cur_rect = 0;
     void set_zombie_texture();
     void handel_animation();

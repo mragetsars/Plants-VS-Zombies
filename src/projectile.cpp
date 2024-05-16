@@ -7,15 +7,14 @@ Projectile::Projectile(Vector2f p, Projectile_Type input_type){
         IntRect rect;
         rect.top = 2;
         rect.left = 2;
-        rect.width = 21;
+        rect.width = 19;
         rect.height = 17;
         sprite.setTextureRect(rect);
         sprite.setTexture(texture);
-        sprite.setScale(0.7, 0.7);
+        sprite.setScale(1, 1);
 }
 
 Projectile::~Projectile(){
-
 }
 
 void Projectile::render(RenderWindow &window){
@@ -36,14 +35,10 @@ FloatRect Projectile::get_rect(){
 }
 
 void Projectile::set_projectile_texture(){
-    if(type == Pea){
-        if (!texture.loadFromFile(PICS_PATH + "Pea.png")) {
+    if(type == Pea)
+        if (!texture.loadFromFile(PICS_PATH + "Pea.png"))
             debug("failed to load player texture");
-        }
-    }
-    if(type == Icepea){
-        if (!texture.loadFromFile(PICS_PATH + "Snowpea.png")) {
+    if(type == Snowpea)
+        if (!texture.loadFromFile(PICS_PATH + "Snowpea.png"))
             debug("failed to load player texture");
-        }
-    }
 }

@@ -1,40 +1,33 @@
 #pragma once
 
 #include "global.hpp"
-#include "plants.hpp"
-#include "projectile.hpp"
-#include "handler.hpp"
-#include "management.hpp"
+#include "game_handler.hpp"
 
 enum State {
-  IN_GAME,
+  GAME,
   // PAUSE_MENU,
   // MAIN_MENU,
   // VICTORY_SCREEN,
-  // GAMEOVER_SCREEN,
+  GAMEOVER_SCREEN,
   // EXIT
 };
 
 class System {
 public:
   System(int width, int height);
-  void run();
   ~System();
   RenderWindow window;
+  void run();
 
 private:
   State state;
-  PeashooterHandler* handler1;
-  // PeashooterHandler* handler2;
-  vector<Shooter*> peashooters;
+  Game_Handler* game_handler;
   Texture backgroundTexture;
   Sprite backgroundSprite;
   Music music;
   void handle_events();
   void update();
   void render();
-  void handle_key_up(Keyboard::Key key);
-  void handle_key_down(Keyboard::Key key);
+  void set_background_texture();
   void handle_mouse_press(Event ev);
-  void handle_mouse_release(Event ev);
 };

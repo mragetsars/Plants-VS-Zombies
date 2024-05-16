@@ -15,7 +15,6 @@ Zombie::Zombie(Vector2f p, Zombie_Type input_type){
 }
        
 Zombie::~Zombie(){
-
 }
 
 void Zombie::render(RenderWindow &window){
@@ -33,26 +32,22 @@ FloatRect Zombie::get_rect(){
 }
 
 void Zombie::set_zombie_texture(){
-    if(type == Normal1){
-        if (!texture.loadFromFile(PICS_PATH + "AZombie.png")) {
+    if(type == Normal1)
+        if (!texture.loadFromFile(PICS_PATH + "AZombie.png"))
             debug("failed to load zombie texture");
-        }
-    }
-    else if(type == Normal2){
-        if (!texture.loadFromFile(PICS_PATH + "BZombie.png")) {
+    if(type == Normal2)
+        if (!texture.loadFromFile(PICS_PATH + "BZombie.png"))
             debug("failed to load zombie texture");
-        }
-    }
 }
 
 void Zombie::handel_animation(){
     Time animationelapsed = animationclock.getElapsedTime();
     if(animationelapsed.asMilliseconds() >= 100){
         animationclock.restart();
-        cur_rect = (cur_rect + 1) % 5;
+        cur_rect = (cur_rect + 1) % 7;
         IntRect rect;
         rect.top = 2;
-        rect.left = animation_rect[cur_rect];
+        rect.left = zombie_animation_rect[cur_rect];
         rect.width = 43; 
         rect.height = 53;
         sprite.setTextureRect(rect);
