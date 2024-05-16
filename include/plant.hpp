@@ -20,7 +20,9 @@ class Plant{
     bool handle_mouse_press(Vector2i pos, Plant_Type input_type);
     Vector2f get_projectile_pos();
     Projectile_Type get_projectile_type();
+    void set_action();
     vector < Projectile* > projectiles;
+    bool action;
     Plant_Type type;
   private:
     Clock animationclock;

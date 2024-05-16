@@ -22,13 +22,13 @@ const int WIDTH = 1400;
 const int HEIGHT = 600;
 const int FRAME_RATE = 260;
 const int FARM_LINES[5] = {90, 190, 290, 390, 490};
-const int FARM_COLUMNs[9] = {255, 330, 412, 491, 570, 649, 729, 807, 887};
+const int FARM_COLUMNs[9] = {260, 340, 430, 500, 580, 660, 740, 820, 900};
 
 const string PICS_PATH = "./files/pics/",
              AUDIO_PATH = "./files/audio/",
              FONTS_PATH = "./files/fonts/";
 
-const int plant_action_animation_rect[3] = {2, 86, 170};
+const int plant_action_animation_rect[6] = {2, 86, 170, 2, 86, 170};
 const int plant_idle_animation_rect[6] = {2, 86, 170, 254, 338, 422};
 const int zombie_animation_rect[7] = {3, 55, 107, 159, 211, 263, 315};
 #define debug(x) cout << x << endl, exit(0);

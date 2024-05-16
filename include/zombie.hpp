@@ -14,6 +14,7 @@ public:
     void render(RenderWindow &window);
     void update();
     FloatRect get_rect();
+    int get_line();
 private: 
     Zombie_Type type;
     Clock animationclock;

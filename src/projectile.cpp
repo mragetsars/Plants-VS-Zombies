@@ -7,7 +7,10 @@ Projectile::Projectile(Vector2f p, Projectile_Type input_type){
         IntRect rect;
         rect.top = 2;
         rect.left = 2;
-        rect.width = 19;
+        if(type == Pea)
+            rect.width = 19;
+        if(type == Snowpea)
+            rect.width = 22;
         rect.height = 17;
         sprite.setTextureRect(rect);
         sprite.setTexture(texture);

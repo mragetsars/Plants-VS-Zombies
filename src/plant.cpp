@@ -2,13 +2,14 @@
 
 Plant::Plant(int x, int y){
     type = EmptyPlant;
+    action = false;
     set_plant_texture();
     pos = Vector2f(x, y);
     IntRect rect;
     rect.top = 2;
     rect.left = 12;
     rect.width = 70;
-    rect.height = 70;
+    rect.height = 80;
     sprite.setTexture(texture);
     sprite.setTextureRect(rect);
     sprite.setScale(1, 1);
@@ -21,9 +22,9 @@ Plant::~Plant(){
 void Plant::render(RenderWindow &window){
     window.draw(sprite);
 }
-
+//
 void Plant::update(Vector2i mousePos){
-    if((type == SnowpeaShooter)||(type == PeaShooter)||(type == SunFlower))
+    if(!((type == SelectedPlant)||(type == EmptyPlant)))
         handel_animation();
     if(type == EmptyPlant){
         Vector2f spritePos = sprite.getPosition();
@@ -75,27 +76,51 @@ bool Plant::handle_mouse_press(Vector2i mousePos, Plant_Type input_type){
 }
 
 void Plant::set_plant_texture(){
-    if(type == EmptyPlant)
-        if (!texture.loadFromFile(PICS_PATH + "EmptyPlant.png"))
-            debug("failed to load player texture");
-    if(type == SelectedPlant)
-        if (!texture.loadFromFile(PICS_PATH + "SelectedPlant.png"))
-            debug("failed to load player texture");
-    if(type == PeaShooter)
-        if (!texture.loadFromFile(PICS_PATH + "PeaShooter(attack).png"))
-            debug("failed to load player texture");
-    if(type == SnowpeaShooter)
-        if (!texture.loadFromFile(PICS_PATH + "SnowpeaShooter(attack).png"))
-            debug("failed to load player texture");
-    if(type == SunFlower)
-        if (!texture.loadFromFile(PICS_PATH + "SunFlower(idle).png"))
-            debug("failed to load player texture");
+    switch (type){
+    case (EmptyPlant):
+            if (!texture.loadFromFile(PICS_PATH + "EmptyPlant.png"))
+                debug("failed to load player texture");
+        break;
+    case (SelectedPlant):
+            if (!texture.loadFromFile(PICS_PATH + "SelectedPlant.png"))
+                debug("failed to load player texture");
+        break;
+    case (PeaShooter):
+        if(action){
+            if (!texture.loadFromFile(PICS_PATH + "PeaShooter(attack).png"))
+                debug("failed to load player texture");
+        }else{
+            if (!texture.loadFromFile(PICS_PATH + "PeaShooter(idle).png"))
+                debug("failed to load player texture");
+        }
+        break;
+    case (SnowpeaShooter):
+        if(action){
+            if (!texture.loadFromFile(PICS_PATH + "SnowpeaShooter(attack).png"))
+                debug("failed to load player texture");
+        }else{
+            if (!texture.loadFromFile(PICS_PATH + "SnowpeaShooter(idle).png"))
+                debug("failed to load player texture");
+        }
+        break;
+    case (SunFlower):
+        if(action){
+            if (!texture.loadFromFile(PICS_PATH + "SunFlower(glow).png"))
+                debug("failed to load player texture");
+        }else{
+            if (!texture.loadFromFile(PICS_PATH + "SunFlower(idle).png"))
+                debug("failed to load player texture");
+        }
+        break;
+    }
 }
 
 void Plant::handel_animation(){
-    if((type == PeaShooter)||(type == SnowpeaShooter))
+    if(action){
+        set_plant_texture();
         handel_action_animation();
-    if((type == SunFlower))
+    }else
+        // set_plant_texture();
         handel_idle_animation();
 }
 
@@ -105,7 +130,7 @@ void Plant::handel_action_animation(){
         animationclock.restart();
         IntRect rect;
         rect.top = 2;
-        cur_rect = (cur_rect + 1) % 3;
+        cur_rect = (cur_rect + 1) % 6;
         rect.left = plant_action_animation_rect[cur_rect]+10;
         rect.width = 70; 
         rect.height = 70;
@@ -125,4 +150,9 @@ void Plant::handel_idle_animation(){
         rect.height = 70;
         sprite.setTextureRect(rect);
     }
+}
+
+void Plant::set_action(){
+    if((type == PeaShooter)||(type == SnowpeaShooter))
+        action = true;
 }

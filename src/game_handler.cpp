@@ -39,6 +39,7 @@ void Game_Handler::update(Vector2i pos){
         z->update();
     delete_out_of_bounds();
     handle_collision();
+    handle_detection();
 }
 
 void Game_Handler::render(RenderWindow &window){
@@ -77,7 +78,7 @@ void Game_Handler::handle_mouse_press(Vector2i pos){
 void Game_Handler::add_projectile(){
     Projectile* p_temp;
     for(auto p : Plants){
-        if((p->type == PeaShooter) || (p->type == SnowpeaShooter)){
+        if((p->action)&&((p->type == PeaShooter) || (p->type == SnowpeaShooter))){
             p_temp = new Projectile(p->get_projectile_pos(), p->get_projectile_type());
             projectiles.push_back(p_temp);
         }
@@ -88,9 +89,9 @@ void Game_Handler::add_zombie(){
     int i = rand()%2;
     Zombie* z;
     if(i == 1)
-        z = new Zombie(Vector2f(WIDTH, ((rng()%6)*100)-35), Normal1);
+        z = new Zombie(Vector2f(WIDTH, ((rng()%5)*100)+65), Normal1);
     else
-        z = new Zombie(Vector2f(WIDTH, ((rng()%6)*100)-35), Normal2);
+        z = new Zombie(Vector2f(WIDTH, ((rng()%5)*100)+65), Normal2);
     zombies.push_back(z);
 }
 
@@ -119,7 +120,7 @@ void Game_Handler::handle_collision(){
                 trashv.push_back(v);
                 trashz.push_back(z);
             }
-        }   
+        }
     }
     for(auto v : trashv){
         projectiles.erase(remove(projectiles.begin(), projectiles.end(), v), projectiles.end());   
@@ -128,5 +129,36 @@ void Game_Handler::handle_collision(){
     for(auto z : trashz){
         zombies.erase(remove(zombies.begin(), zombies.end(), z), zombies.end());   
         delete z;
+    }
+}
+
+void Game_Handler::handle_detection(){
+    for(auto z : zombies){
+        if(z->get_rect().left < 900)
+            switch (z->get_line())
+            {
+            case (1):
+                for(int k = 0; k < 9; k++)
+                    Plants[5*k]->set_action();
+                break;
+            case (2):
+                for(int k = 0; k < 9; k++)
+                    Plants[(5*k)+1]->set_action();
+                break;
+            case (3):
+                for(int k = 0; k < 9; k++)
+                    Plants[(5*k)+2]->set_action();
+                break;
+            case (4):
+                for(int k = 0; k < 9; k++)
+                    Plants[(5*k)+3]->set_action();
+                break;
+            case (5):
+                for(int k = 0; k < 9; k++)
+                    Plants[(5*k)+4]->set_action();
+                break;
+            default:
+                break;
+            }
     }
 }

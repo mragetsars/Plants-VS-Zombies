@@ -53,3 +53,16 @@ void Zombie::handel_animation(){
         sprite.setTextureRect(rect);
     }
 }
+
+int Zombie::get_line(){
+    if(pos.y == 65)
+        return 1;
+    if(pos.y == 165)
+        return 2;
+    if(pos.y == 265)
+        return 3;
+    if(pos.y == 365)
+        return 4;
+    if(pos.y == 465)
+        return 5;   
+}

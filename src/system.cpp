@@ -102,10 +102,10 @@ void System::handle_mouse_press(Event ev) {
 }
 
 void System::set_background_texture(){
-  // if (!backgroundTexture.loadFromFile(PICS_PATH + "DayBackground.png")) {
-  //   debug("failed to load image");
-  // }
-  if (!backgroundTexture.loadFromFile(PICS_PATH + "NightBackground.png")) {
+  if (!backgroundTexture.loadFromFile(PICS_PATH + "DayBackground.png")) {
     debug("failed to load image");
   }
+  // if (!backgroundTexture.loadFromFile(PICS_PATH + "NightBackground.png")) {
+  //   debug("failed to load image");
+  // }
 }
