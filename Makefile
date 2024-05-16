@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -std=c++17 -Wall -Wextra -I./include -fsanitize=address -fsanitize=undefined
+CXXFLAGS = -std=c++20 -Wall -Wextra -I./include -fsanitize=address -fsanitize=undefined
 LFLAGS = -L./files -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 SRCDIR = src
 OBJDIR = obj

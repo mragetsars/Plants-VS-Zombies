@@ -121,31 +121,26 @@ void System::handle_mouse_press(Event ev) {
 
 void System::set_background_texture(){
   if(mode == Day)
-    if (!backgroundTexture.loadFromFile(PICS_PATH + "g_DayBackground.png")) {
+    if (!backgroundTexture.loadFromFile(PICS_PATH + "g_DayBackground.png"))
       debug("failed to load image");
-    }
   if(mode == Night)
-    if (!backgroundTexture.loadFromFile(PICS_PATH + "g_NightBackground.png")) {
+    if (!backgroundTexture.loadFromFile(PICS_PATH + "g_NightBackground.png"))
       debug("failed to load image");
-    }
   backgroundSprite.setTexture(backgroundTexture);
 }
 
 void System::set_menu_texture(){
   if(mode == Day)
-    if (!menuTexture.loadFromFile(PICS_PATH + "m_DayMenu.png")) {
+    if (!menuTexture.loadFromFile(PICS_PATH + "m_DayMenu.png"))
       debug("failed to load image");
-    }
   if(mode == Night)
-    if (!menuTexture.loadFromFile(PICS_PATH + "m_NightMenu.png")) {
+    if (!menuTexture.loadFromFile(PICS_PATH + "m_NightMenu.png"))
       debug("failed to load image");
-    }
   menuSprite.setTexture(menuTexture);
 }
 
 void System::set_gameover_texture(){
-  if (!gameoverTexture.loadFromFile(PICS_PATH + "g_GameOverScreen.png")) {
+  if (!gameoverTexture.loadFromFile(PICS_PATH + "g_GameOverScreen.png"))
     debug("failed to load image");
-  }
   gameoverSprite.setTexture(gameoverTexture);
 }

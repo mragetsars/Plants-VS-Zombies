@@ -3,8 +3,8 @@
 #include "global.hpp"
 
 enum Zombie_Type {
-  Normal1,
-  Normal2,
+  Regular,
+  Gargantuar,
 };
 
 class Zombie{
@@ -13,16 +13,22 @@ public:
     ~Zombie();
     void render(RenderWindow &window);
     void update();
+    int output_damage();
+    bool input_damage(int input_damage);
     FloatRect get_rect();
     int get_line();
-private: 
+    bool action;
+private:
     Zombie_Type type;
-    Clock animationclock;
+    int health;
+    int damage;
+    int speed;
+    void setup();
+    Vector2f pos;
     Texture texture;
     Sprite sprite;
-    Vector2f pos;
-    const float speed = 0.50;
-    int cur_rect = 0;
     void set_zombie_texture();
+    Clock animationclock;
+    int cur_rect = 0;
     void handel_animation();
 };

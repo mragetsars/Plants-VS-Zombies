@@ -13,13 +13,16 @@ public:
     ~Projectile();
     void render(RenderWindow &window);
     void update();
-    bool is_out();
+    int output_damage();
     FloatRect get_rect();
+    bool is_out();
 private:
     Projectile_Type type;
-    const int speed = 1;
+    int damage;
+    int speed;
+    void setup();
+    Vector2f pos;
     Texture texture;
     Sprite sprite;
-    Vector2f pos;
     void set_projectile_texture();
 };

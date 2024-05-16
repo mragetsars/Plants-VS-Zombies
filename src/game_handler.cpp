@@ -53,6 +53,7 @@ void Game_Handler::update(Vector2i mousePos){
     delete_out_of_bounds();
     handle_collision();
     handle_detection();
+    handle_contention();
 }
 
 void Game_Handler::render(RenderWindow &window){
@@ -112,7 +113,7 @@ void Game_Handler::add_projectile(){
     Projectile* p_temp;
     for(auto p : Plants){
         if((p->action)&&((p->type == PeaShooter) || (p->type == SnowpeaShooter))){
-            p_temp = new Projectile(p->get_projectile_pos(), p->get_projectile_type());
+            p_temp = p->get_projectile();
             Projectiles.push_back(p_temp);
         }
     }
@@ -122,9 +123,9 @@ void Game_Handler::add_zombie(){
     int i = rand()%2;
     Zombie* z;
     if(i == 1)
-        z = new Zombie(Vector2f(WIDTH, ((rng()%5)*100)+65), Normal1);
+        z = new Zombie(Vector2f(WIDTH, ((rng()%5)*100)+65), Regular);
     else
-        z = new Zombie(Vector2f(WIDTH, ((rng()%5)*100)+65), Normal2);
+        z = new Zombie(Vector2f(WIDTH, ((rng()%5)*100)+65), Gargantuar);
     Zombies.push_back(z);
 }
 
@@ -162,7 +163,8 @@ void Game_Handler::handle_collision(){
             FloatRect v_rect = v->get_rect();
             if(z_rect.intersects(v_rect)){
                 trashv.push_back(v);
-                trashz.push_back(z);
+                if(!(z->input_damage(v->output_damage())))
+                    trashz.push_back(z);
             }
         }
     }
@@ -181,27 +183,31 @@ void Game_Handler::handle_detection(){
         p->action = false;
     for(auto z : Zombies){
         if(z->get_rect().left < 1000)
-            switch (z->get_line())
-            {
+            switch (z->get_line()){
             case (1):
                 for(int k = 0; k < 9; k++)
-                    Plants[5*k]->set_action();
+                    if((Plants[5*k]->type == PeaShooter)||(Plants[5*k]->type == SnowpeaShooter))
+                        Plants[5*k]->action = true;
                 break;
             case (2):
                 for(int k = 0; k < 9; k++)
-                    Plants[(5*k)+1]->set_action();
+                    if((Plants[(5*k)+1]->type == PeaShooter)||(Plants[(5*k)+1]->type == SnowpeaShooter))
+                        Plants[(5*k)+1]->action = true;
                 break;
             case (3):
                 for(int k = 0; k < 9; k++)
-                    Plants[(5*k)+2]->set_action();
+                    if((Plants[(5*k)+2]->type == PeaShooter)||(Plants[(5*k)+2]->type == SnowpeaShooter))
+                        Plants[(5*k)+2]->action = true;
                 break;
             case (4):
                 for(int k = 0; k < 9; k++)
-                    Plants[(5*k)+3]->set_action();
+                    if((Plants[(5*k)+3]->type == PeaShooter)||(Plants[(5*k)+3]->type == SnowpeaShooter))
+                        Plants[(5*k)+3]->action = true;
                 break;
             case (5):
                 for(int k = 0; k < 9; k++)
-                    Plants[(5*k)+4]->set_action();
+                    if((Plants[(5*k)+4]->type == PeaShooter)||(Plants[(5*k)+4]->type == SnowpeaShooter))
+                        Plants[(5*k)+4]->action = true;
                 break;
             default:
                 break;
@@ -210,5 +216,20 @@ void Game_Handler::handle_detection(){
 }
 
 void Game_Handler::handle_contention(){
-    
+    for(auto z : Zombies)
+        z->action = false;
+    for(auto p: Plants){
+        for(auto z : Zombies){
+            FloatRect z_rect = z->get_rect();
+            FloatRect p_rect = p->get_rect();
+            if(z_rect.intersects(p_rect)&&!((p->type == EmptyPlant)||(p->type == SelectedPlant))){
+                z->action = true;
+                Time zattackelapsed = zombie_attack.getElapsedTime();
+                if(zattackelapsed.asMilliseconds() >= 500){
+                    zombie_attack.restart();
+                    p->input_damage(z->output_damage());
+                }
+            }
+        }
+    }
 }

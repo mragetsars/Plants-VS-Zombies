@@ -61,7 +61,7 @@ void Menu_Handler::update(Vector2i mousePos){
         ExitKey = true;
     }
     Vector2f mspritePos = ModeKeySprite.getPosition();
-    Vector2f mspriteSize = {ModeKeySprite.getTextureRect().width/3, ModeKeySprite.getTextureRect().height/2};
+    Vector2f mspriteSize = {ModeKeySprite.getTextureRect().width, ModeKeySprite.getTextureRect().height/4};
     if (mousePos.x >= mspritePos.x && mousePos.x <= mspritePos.x + mspriteSize.x &&
         mousePos.y >= mspritePos.y && mousePos.y <= mspritePos.y + mspriteSize.y)
     {

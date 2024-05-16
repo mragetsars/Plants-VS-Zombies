@@ -26,6 +26,7 @@ private:
     Plant_Type new_plant_type;
     mt19937 rng;
     Clock sunclock, projectileclock, zombieclock;
+    Clock zombie_attack;
     Card* peashootercard;
     Card* snowpeashootercard;
     Card* sunflowercard;

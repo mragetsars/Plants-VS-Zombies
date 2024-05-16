@@ -2,6 +2,7 @@
 
 Projectile::Projectile(Vector2f p, Projectile_Type input_type){
         type = input_type;
+        setup();
         pos = p;
         set_projectile_texture();
         IntRect rect;
@@ -29,12 +30,29 @@ void Projectile::update(){
     sprite.setPosition(pos);
 }
 
+int Projectile::output_damage(){
+    return damage;
+}
+
 bool Projectile::is_out(){
     return sprite.getPosition().x > WIDTH + 10;
 }
 
 FloatRect Projectile::get_rect(){
     return sprite.getGlobalBounds();
+}
+
+void Projectile::setup(){
+    switch (type){
+    case (Pea):
+        damage = 5;
+        speed = 3;
+        break;
+    case (Snowpea):
+        damage = 8;
+        speed = 3;
+        break;
+    }
 }
 
 void Projectile::set_projectile_texture(){

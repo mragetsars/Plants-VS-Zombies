@@ -2,6 +2,8 @@
 
 Zombie::Zombie(Vector2f p, Zombie_Type input_type){
     type = input_type;
+    setup();
+    action = false;
     pos = p;
     set_zombie_texture();
     IntRect rect;
@@ -23,35 +25,25 @@ void Zombie::render(RenderWindow &window){
 
 void Zombie::update(){
     handel_animation();
-    pos.x -= speed;
+    if(!action)
+        pos.x -= speed;
     sprite.setPosition(pos);
+}
+
+int Zombie::output_damage(){
+    return damage;
+}
+
+bool Zombie::input_damage(int input_damage){
+    if(health - input_damage > 0){
+        health -= input_damage;
+        return true;
+    }else
+        return false;
 }
 
 FloatRect Zombie::get_rect(){
     return sprite.getGlobalBounds();
-}
-
-void Zombie::set_zombie_texture(){
-    if(type == Normal1)
-        if (!texture.loadFromFile(PICS_PATH + "z_AZombie.png"))
-            debug("failed to load zombie texture");
-    if(type == Normal2)
-        if (!texture.loadFromFile(PICS_PATH + "z_BZombie.png"))
-            debug("failed to load zombie texture");
-}
-
-void Zombie::handel_animation(){
-    Time animationelapsed = animationclock.getElapsedTime();
-    if(animationelapsed.asMilliseconds() >= 100){
-        animationclock.restart();
-        cur_rect = (cur_rect + 1) % 7;
-        IntRect rect;
-        rect.top = 2;
-        rect.left = zombie_animation_rect[cur_rect];
-        rect.width = 43; 
-        rect.height = 53;
-        sprite.setTextureRect(rect);
-    }
 }
 
 int Zombie::get_line(){
@@ -65,4 +57,58 @@ int Zombie::get_line(){
         return 4;
     if(pos.y == 465)
         return 5;   
+}
+
+void Zombie::setup(){
+    switch (type){
+    case (Regular):
+        health = 20;
+        damage = 5;
+        speed = 2;
+        break;
+    case (Gargantuar):
+        health = 20;
+        damage = 8;
+        speed = 2;
+        break;
+    }
+}
+
+void Zombie::set_zombie_texture(){
+    if(type == Regular){
+        if(action){
+            if (!texture.loadFromFile(PICS_PATH + "z_BZombie(eating).png"))
+                debug("failed to load zombie texture");
+        }else{
+            if (!texture.loadFromFile(PICS_PATH + "z_BZombie.png"))
+                debug("failed to load zombie texture");
+        }
+    }
+    if(type == Gargantuar){
+        if(action){
+            if (!texture.loadFromFile(PICS_PATH + "z_BZombie(eating).png"))
+                debug("failed to load zombie texture");
+        }else{
+            if (!texture.loadFromFile(PICS_PATH + "z_BZombie.png"))
+                debug("failed to load zombie texture");
+        }
+    }
+}
+
+void Zombie::handel_animation(){
+    if(action)
+        set_zombie_texture();
+    else  
+        set_zombie_texture();
+    Time animationelapsed = animationclock.getElapsedTime();
+    if(animationelapsed.asMilliseconds() >= 100){
+        animationclock.restart();
+        cur_rect = (cur_rect + 1) % 7;
+        IntRect rect;
+        rect.top = 2;
+        rect.left = zombie_animation_rect[cur_rect];
+        rect.width = 43;
+        rect.height = 53;
+        sprite.setTextureRect(rect);
+    }
 }

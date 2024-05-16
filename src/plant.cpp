@@ -3,6 +3,7 @@
 Plant::Plant(int x, int y){
     type = EmptyPlant;
     action = false;
+    setup();
     set_plant_texture();
     pos = Vector2f(x, y);
     IntRect rect;
@@ -48,17 +49,14 @@ void Plant::update(Vector2i mousePos){
     }
 }
 
-Vector2f Plant::get_projectile_pos(){
-    return Vector2f(sprite.getPosition().x + 50, sprite.getPosition().y + 12);
-}
-
-Projectile_Type Plant::get_projectile_type(){
+Projectile* Plant::get_projectile(){
     Projectile_Type output_projectile_type;
     if(type == PeaShooter)
         output_projectile_type = Pea;
     else if(type == SnowpeaShooter)
         output_projectile_type = Snowpea;
-    return output_projectile_type;
+    Vector2f output_projectile_pos = Vector2f(sprite.getPosition().x + 50, sprite.getPosition().y + 12);
+    return new Projectile(output_projectile_pos, output_projectile_type);
 }
 
 bool Plant::handle_mouse_press(Vector2i mousePos, Plant_Type input_type){
@@ -68,6 +66,7 @@ bool Plant::handle_mouse_press(Vector2i mousePos, Plant_Type input_type){
         mousePos.y >= spritePos.y && mousePos.y <= spritePos.y + spriteSize.y)
     {
         type = input_type;
+        setup();
         set_plant_texture();
         return true;
     }
@@ -75,15 +74,62 @@ bool Plant::handle_mouse_press(Vector2i mousePos, Plant_Type input_type){
         return false;
 }
 
+void Plant::input_damage(int input_damage){
+    if(health - input_damage > 0){
+        health -= input_damage;
+    }else{
+        type = EmptyPlant;
+        action = false;
+        setup();
+        set_plant_texture();
+        IntRect rect;
+        rect.top = 2;
+        rect.left = 12;
+        rect.width = 70;
+        rect.height = 80;
+        sprite.setTexture(texture);
+        sprite.setTextureRect(rect);
+        sprite.setScale(1, 1);
+        sprite.setPosition(pos);
+    }
+}
+
+FloatRect Plant::get_rect(){
+    return sprite.getGlobalBounds();
+}
+
+void Plant::setup(){
+    switch (type){
+    case (EmptyPlant):
+        health = 0;
+        break;
+    case (SelectedPlant):
+        health = 0;
+        break;
+    case (PeaShooter):
+        health = 40;
+        break;
+    case (SnowpeaShooter):
+        health = 30;
+        break;
+    case (SunFlower):
+        health = 30;
+        break;
+    case (Wallnut):
+        health = 200;
+        break;
+    }
+}
+
 void Plant::set_plant_texture(){
     switch (type){
     case (EmptyPlant):
-            if (!texture.loadFromFile(PICS_PATH + "p_EmptyPlant.png"))
-                debug("failed to load player texture");
+        if (!texture.loadFromFile(PICS_PATH + "p_EmptyPlant.png"))
+            debug("failed to load player texture");
         break;
     case (SelectedPlant):
-            if (!texture.loadFromFile(PICS_PATH + "p_SelectedPlant.png"))
-                debug("failed to load player texture");
+        if (!texture.loadFromFile(PICS_PATH + "p_SelectedPlant.png"))
+            debug("failed to load player texture");
         break;
     case (PeaShooter):
         if(action){
@@ -113,45 +159,24 @@ void Plant::set_plant_texture(){
         }
         break;
     case (Wallnut):
-        if(false){
-            if (!texture.loadFromFile(PICS_PATH + "p_Wallnut(verycracked).png"))
-                debug("failed to load player texture");
-        }else if(false){
-            if (!texture.loadFromFile(PICS_PATH + "p_Wallnut(cracked).png"))
-                debug("failed to load player texture");
-        }else if(true){
+        if(health >= 150)
             if (!texture.loadFromFile(PICS_PATH + "p_Wallnut(idle).png"))
                 debug("failed to load player texture");
-        }
+        if((health < 100)&&(health > 50))
+            if (!texture.loadFromFile(PICS_PATH + "p_Wallnut(cracked).png"))
+                debug("failed to load player texture");
+        if(health <= 50)
+            if (!texture.loadFromFile(PICS_PATH + "p_Wallnut(verycracked).png"))
+                debug("failed to load player texture");
         break;
     }
 }
 
 void Plant::handel_animation(){
-    if(action){
+    if(action)
         set_plant_texture();
-        handel_action_animation();
-    }else{    
+    else  
         set_plant_texture();
-        handel_idle_animation();
-    }
-}
-
-void Plant::handel_action_animation(){
-    Time animationelapsed = animationclock.getElapsedTime();
-    if(animationelapsed.asMilliseconds() >= 300){
-        animationclock.restart();
-        IntRect rect;
-        rect.top = 2;
-        cur_rect = (cur_rect + 1) % 6;
-        rect.left = plant_animation_rect[cur_rect]+10;
-        rect.width = 70; 
-        rect.height = 70;
-        sprite.setTextureRect(rect);
-    }
-}
-
-void Plant::handel_idle_animation(){
     Time animationelapsed = animationclock.getElapsedTime();
     if(animationelapsed.asMilliseconds() >= 200){
         animationclock.restart();
@@ -163,9 +188,4 @@ void Plant::handel_idle_animation(){
         rect.height = 70;
         sprite.setTextureRect(rect);
     }
-}
-
-void Plant::set_action(){
-    if((type == PeaShooter)||(type == SnowpeaShooter))
-        action = true;
 }
