@@ -29,7 +29,7 @@ const string PICS_PATH = "./files/pics/",
              FONTS_PATH = "./files/fonts/";
 
 const int plant_action_animation_rect[6] = {2, 86, 170, 2, 86, 170};
-const int plant_idle_animation_rect[6] = {2, 86, 170, 254, 338, 422};
+const int plant_animation_rect[6] = {2, 86, 170, 254, 338, 422};
 const int zombie_animation_rect[7] = {3, 55, 107, 159, 211, 263, 315};
 #define debug(x) cout << x << endl, exit(0);
 

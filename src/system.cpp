@@ -1,7 +1,7 @@
 #include "system.hpp"
 
 System::System(int width, int height) {
-  window.create(VideoMode(width, height), "PVZ", Style::Close);
+  window.create(VideoMode(width, height), "PVZ", Style::Default);
   window.setFramerateLimit(FRAME_RATE);
   state = GAME;
   set_background_texture();

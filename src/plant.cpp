@@ -22,7 +22,7 @@ Plant::~Plant(){
 void Plant::render(RenderWindow &window){
     window.draw(sprite);
 }
-//
+
 void Plant::update(Vector2i mousePos){
     if(!((type == SelectedPlant)||(type == EmptyPlant)))
         handel_animation();
@@ -119,19 +119,20 @@ void Plant::handel_animation(){
     if(action){
         set_plant_texture();
         handel_action_animation();
-    }else
-        // set_plant_texture();
+    }else{    
+        set_plant_texture();
         handel_idle_animation();
+    }
 }
 
 void Plant::handel_action_animation(){
     Time animationelapsed = animationclock.getElapsedTime();
-    if(animationelapsed.asMilliseconds() >= 200){
+    if(animationelapsed.asMilliseconds() >= 300){
         animationclock.restart();
         IntRect rect;
         rect.top = 2;
         cur_rect = (cur_rect + 1) % 6;
-        rect.left = plant_action_animation_rect[cur_rect]+10;
+        rect.left = plant_animation_rect[cur_rect]+10;
         rect.width = 70; 
         rect.height = 70;
         sprite.setTextureRect(rect);
@@ -145,7 +146,7 @@ void Plant::handel_idle_animation(){
         IntRect rect;
         rect.top = 2;
         cur_rect = (cur_rect + 1) % 6;
-        rect.left = plant_idle_animation_rect[cur_rect]+10;
+        rect.left = plant_animation_rect[cur_rect]+10;
         rect.width = 70; 
         rect.height = 70;
         sprite.setTextureRect(rect);

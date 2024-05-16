@@ -2,6 +2,7 @@
 
 #include "global.hpp"
 #include "card.hpp"
+#include "sun.hpp"
 #include "plant.hpp"
 #include "projectile.hpp"
 #include "zombie.hpp"
@@ -15,20 +16,23 @@ class Game_Handler{
 public:
     Game_Handler ();
     ~Game_Handler();
-    void update(Vector2i pos);
+    void update(Vector2i mousePos);
     void render(RenderWindow &window);
-    void handle_mouse_press(Vector2i pos);
+    void handle_mouse_press(Vector2i mousePos);
 private:
+    int clamed_suns;
     Handler_Type type;
     Plant_Type new_plant_type;
     mt19937 rng;
-    Clock projectileclock, zombieclock;
+    Clock sunclock, projectileclock, zombieclock;
     Card* peashootercard;
     Card* snowpeashootercard;
     Card* sunflowercard;
+    vector < Sun* > Suns;
     vector < Plant* > Plants;
-    vector < Projectile* > projectiles;
-    vector < Zombie* > zombies;
+    vector < Projectile* > Projectiles;
+    vector < Zombie* > Zombies;
+    void add_sun();
     void add_projectile();
     void add_zombie();
     void delete_out_of_bounds();

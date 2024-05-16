@@ -1,6 +1,7 @@
 #include "game_handler.hpp"
 
 Game_Handler::Game_Handler (){
+    clamed_suns = 0;
     type = Nothing;
     peashootercard= new Card(Vector2f(10,10), PeaShooterCard);
     snowpeashootercard= new Card(Vector2f(10,88), SnowpeaShooterCard);
@@ -11,17 +12,22 @@ Game_Handler::Game_Handler (){
 }
 
 Game_Handler::~Game_Handler(){
-    for(auto v : projectiles){
+    for(auto v : Projectiles){
         delete v;
     }
-    for(auto z : zombies){
+    for(auto z : Zombies){
         delete z;
     }
 }
 
-void Game_Handler::update(Vector2i pos){
+void Game_Handler::update(Vector2i mousePos){
+    Time sunelapsed = sunclock.getElapsedTime();
+    if(sunelapsed.asMilliseconds() >= 6000){
+        sunclock.restart();
+        add_sun();
+    }
     Time projectileelapsed = projectileclock.getElapsedTime();
-    if(projectileelapsed.asMilliseconds() >= 600){
+    if(projectileelapsed.asMilliseconds() >= 900){
         projectileclock.restart();
         add_projectile();
     }
@@ -30,12 +36,17 @@ void Game_Handler::update(Vector2i pos){
         zombieclock.restart();
         add_zombie();
     }
+    clamed_suns = peashootercard ->update(clamed_suns, type == Nothing);
+    clamed_suns = snowpeashootercard ->update(clamed_suns, type == Nothing);   
+    clamed_suns = sunflowercard ->update(clamed_suns, type == Nothing);
+    for(auto s : Suns)
+        s->update();
     for(auto p : Plants)
         if(!((p->type == EmptyPlant)&&(type == Nothing)))
-            p->update(pos);
-    for(auto v : projectiles)
+            p->update(mousePos);
+    for(auto v : Projectiles)
         v->update();
-    for(auto z : zombies)
+    for(auto z : Zombies)
         z->update();
     delete_out_of_bounds();
     handle_collision();
@@ -46,33 +57,41 @@ void Game_Handler::render(RenderWindow &window){
     peashootercard->render(window);
     snowpeashootercard->render(window);
     sunflowercard->render(window);
+    for(auto s : Suns)
+        s->render(window);
     for(auto p : Plants)
         p->render(window);
-    for(auto v : projectiles)
+    for(auto v : Projectiles)
         v->render(window);
-    for(auto z : zombies)
+    for(auto z : Zombies)
         z->render(window);
 }
 
-void Game_Handler::handle_mouse_press(Vector2i pos){
-    if(type == Nothing){
-        if(peashootercard->handle_mouse_press(pos)){
+void Game_Handler::handle_mouse_press(Vector2i mousePos){
+    for(auto s : Suns)
+        clamed_suns = s->handle_mouse_press(mousePos, clamed_suns);
+    if(type == Nothing){ 
+        if(peashootercard->handle_mouse_press(mousePos)){
             type = Choosing;
             new_plant_type = PeaShooter;
         }
-        if(snowpeashootercard->handle_mouse_press(pos)){
+        if(snowpeashootercard->handle_mouse_press(mousePos)){
             type = Choosing;
             new_plant_type = SnowpeaShooter;
         }
-        if(sunflowercard->handle_mouse_press(pos)){
+        if(sunflowercard->handle_mouse_press(mousePos)){
             type = Choosing;
             new_plant_type = SunFlower;
         }
     }
     if(type == Choosing)
         for(auto p : Plants)
-            if(p->handle_mouse_press(pos, new_plant_type))
+            if(p->handle_mouse_press(mousePos, new_plant_type))
                 type = Nothing;
+}
+
+void Game_Handler::add_sun(){
+    Suns.push_back(new Sun(Vector2f(((rng()%5)*100)+65, 0)));
 }
 
 void Game_Handler::add_projectile(){
@@ -80,7 +99,7 @@ void Game_Handler::add_projectile(){
     for(auto p : Plants){
         if((p->action)&&((p->type == PeaShooter) || (p->type == SnowpeaShooter))){
             p_temp = new Projectile(p->get_projectile_pos(), p->get_projectile_type());
-            projectiles.push_back(p_temp);
+            Projectiles.push_back(p_temp);
         }
     }
 }
@@ -92,28 +111,39 @@ void Game_Handler::add_zombie(){
         z = new Zombie(Vector2f(WIDTH, ((rng()%5)*100)+65), Normal1);
     else
         z = new Zombie(Vector2f(WIDTH, ((rng()%5)*100)+65), Normal2);
-    zombies.push_back(z);
+    Zombies.push_back(z);
 }
 
 void Game_Handler::delete_out_of_bounds(){
-    vector <Projectile*> trash;
-    for(auto v : projectiles){
+    vector <Projectile*> trashv;
+    for(auto v : Projectiles){
         if(v->is_out()){
-            trash.push_back(v);
+            trashv.push_back(v);
         }
     }
-    projectiles.erase(remove_if(projectiles.begin(), projectiles.end(), 
-        [](auto p){ return p->is_out(); }), projectiles.end());
-    for (auto p : trash){
-        delete p;
+    Projectiles.erase(remove_if(Projectiles.begin(), Projectiles.end(), 
+        [](auto v){ return v->is_out(); }), Projectiles.end());
+    for (auto v : trashv){
+        delete v;
+    }
+    vector <Sun*> trashs;
+    for(auto s : Suns){
+        if(s->is_out()){
+            trashs.push_back(s);
+        }
+    }
+    Suns.erase(remove_if(Suns.begin(), Suns.end(), 
+        [](auto s){ return s->is_out(); }), Suns.end());
+    for (auto s : trashs){
+        delete s;
     }
 }
 
 void Game_Handler::handle_collision(){
     vector <Projectile*> trashv;
     vector <Zombie*> trashz;
-    for(auto v : projectiles){
-        for(auto z : zombies){
+    for(auto v : Projectiles){
+        for(auto z : Zombies){
             FloatRect z_rect = z->get_rect();
             FloatRect v_rect = v->get_rect();
             if(z_rect.intersects(v_rect)){
@@ -123,18 +153,20 @@ void Game_Handler::handle_collision(){
         }
     }
     for(auto v : trashv){
-        projectiles.erase(remove(projectiles.begin(), projectiles.end(), v), projectiles.end());   
+        Projectiles.erase(remove(Projectiles.begin(), Projectiles.end(), v), Projectiles.end());   
         delete v;
     }
     for(auto z : trashz){
-        zombies.erase(remove(zombies.begin(), zombies.end(), z), zombies.end());   
+        Zombies.erase(remove(Zombies.begin(), Zombies.end(), z), Zombies.end());   
         delete z;
     }
 }
 
 void Game_Handler::handle_detection(){
-    for(auto z : zombies){
-        if(z->get_rect().left < 900)
+    for(auto p : Plants)
+        p->action = false;
+    for(auto z : Zombies){
+        if(z->get_rect().left < 1000)
             switch (z->get_line())
             {
             case (1):
