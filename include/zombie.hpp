@@ -21,7 +21,7 @@ private:
     Texture texture;
     Sprite sprite;
     Vector2f pos;
-    const float speed = 0.25;
+    const float speed = 0.50;
     int cur_rect = 0;
     void set_zombie_texture();
     void handel_animation();

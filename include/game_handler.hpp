@@ -19,6 +19,7 @@ public:
     void update(Vector2i mousePos);
     void render(RenderWindow &window);
     void handle_mouse_press(Vector2i mousePos);
+    bool check_gameover();
 private:
     int clamed_suns;
     Handler_Type type;
@@ -28,6 +29,7 @@ private:
     Card* peashootercard;
     Card* snowpeashootercard;
     Card* sunflowercard;
+    Card* wallnutcard;
     vector < Sun* > Suns;
     vector < Plant* > Plants;
     vector < Projectile* > Projectiles;
@@ -38,4 +40,5 @@ private:
     void delete_out_of_bounds();
     void handle_collision();
     void handle_detection();
+    void handle_contention();
 };

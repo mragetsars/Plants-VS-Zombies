@@ -1,11 +1,12 @@
 #include "game_handler.hpp"
 
 Game_Handler::Game_Handler (){
-    clamed_suns = 0;
+    clamed_suns = 500;
     type = Nothing;
     peashootercard= new Card(Vector2f(10,10), PeaShooterCard);
     snowpeashootercard= new Card(Vector2f(10,88), SnowpeaShooterCard);
     sunflowercard= new Card(Vector2f(10,166), SunFlowerCard);
+    wallnutcard= new Card(Vector2f(10,244), WallnutCard);
     for(int i=0; i < 9; i++)
         for(int j=0; j < 5; j++)
             Plants.push_back(new Plant(FARM_COLUMNs[i], FARM_LINES[j]));
@@ -39,6 +40,7 @@ void Game_Handler::update(Vector2i mousePos){
     clamed_suns = peashootercard ->update(clamed_suns, type == Nothing);
     clamed_suns = snowpeashootercard ->update(clamed_suns, type == Nothing);   
     clamed_suns = sunflowercard ->update(clamed_suns, type == Nothing);
+    clamed_suns = wallnutcard ->update(clamed_suns, type == Nothing);
     for(auto s : Suns)
         s->update();
     for(auto p : Plants)
@@ -57,6 +59,7 @@ void Game_Handler::render(RenderWindow &window){
     peashootercard->render(window);
     snowpeashootercard->render(window);
     sunflowercard->render(window);
+    wallnutcard->render(window);
     for(auto s : Suns)
         s->render(window);
     for(auto p : Plants)
@@ -83,11 +86,22 @@ void Game_Handler::handle_mouse_press(Vector2i mousePos){
             type = Choosing;
             new_plant_type = SunFlower;
         }
+        if(wallnutcard->handle_mouse_press(mousePos)){
+            type = Choosing;
+            new_plant_type = Wallnut;
+        }
     }
     if(type == Choosing)
         for(auto p : Plants)
             if(p->handle_mouse_press(mousePos, new_plant_type))
                 type = Nothing;
+}
+
+bool Game_Handler::check_gameover(){
+    for(auto z : Zombies)
+        if(z->get_rect().left < 200)
+            return true;
+    return false;
 }
 
 void Game_Handler::add_sun(){
@@ -193,4 +207,8 @@ void Game_Handler::handle_detection(){
                 break;
             }
     }
+}
+
+void Game_Handler::handle_contention(){
+    
 }

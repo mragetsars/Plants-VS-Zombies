@@ -4,12 +4,12 @@
 #include "projectile.hpp"
 
 enum Plant_Type {
-  PeaShooter,
-  SnowpeaShooter,
   EmptyPlant,
   SelectedPlant,
+  PeaShooter,
+  SnowpeaShooter,
   SunFlower,
-  
+  Wallnut,
 };
 
 class Plant{

@@ -112,6 +112,18 @@ void Plant::set_plant_texture(){
                 debug("failed to load player texture");
         }
         break;
+    case (Wallnut):
+        if(false){
+            if (!texture.loadFromFile(PICS_PATH + "Wallnut(verycracked).png"))
+                debug("failed to load player texture");
+        }else if(false){
+            if (!texture.loadFromFile(PICS_PATH + "Wallnut(cracked).png"))
+                debug("failed to load player texture");
+        }else if(true){
+            if (!texture.loadFromFile(PICS_PATH + "Wallnut(idle).png"))
+                debug("failed to load player texture");
+        }
+        break;
     }
 }
 

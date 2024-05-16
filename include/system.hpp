@@ -2,14 +2,19 @@
 
 #include "global.hpp"
 #include "game_handler.hpp"
+#include "menu_handler.hpp"
 
 enum State {
   GAME,
-  // PAUSE_MENU,
-  // MAIN_MENU,
-  // VICTORY_SCREEN,
+  // PAUSE,
+  MENU,
   GAMEOVER_SCREEN,
-  // EXIT
+  EXIT
+};
+
+enum ScreenMode{
+  Day,
+  Night
 };
 
 class System {
@@ -21,13 +26,21 @@ public:
 
 private:
   State state;
-  Game_Handler* game_handler;
   Texture backgroundTexture;
   Sprite backgroundSprite;
+  void set_background_texture();
+  Texture gameoverTexture;
+  Sprite gameoverSprite;
+  void set_gameover_texture();
+  Texture menuTexture;
+  Sprite menuSprite;
+  void set_menu_texture();
   Music music;
+  Game_Handler* game_handler;
+  Menu_Handler* menu_handler;
   void handle_events();
   void update();
   void render();
-  void set_background_texture();
   void handle_mouse_press(Event ev);
+  ScreenMode screenmode;
 };

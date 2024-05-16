@@ -20,7 +20,7 @@ using namespace std;
 const float PI = acos(-1);
 const int WIDTH = 1400;
 const int HEIGHT = 600;
-const int FRAME_RATE = 260;
+const int FRAME_RATE = 120;
 const int FARM_LINES[5] = {90, 190, 290, 390, 490};
 const int FARM_COLUMNs[9] = {260, 340, 430, 500, 580, 660, 740, 820, 900};
 
