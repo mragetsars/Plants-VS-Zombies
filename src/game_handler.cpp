@@ -1,15 +1,17 @@
 #include "game_handler.hpp"
 
 Game_Handler::Game_Handler (){
-    clamed_suns = 500;
+    setting = new Setting();
+    clamed_suns = 0;
     type = Nothing;
-    peashootercard= new Card(Vector2f(10,10), PeaShooterCard);
-    snowpeashootercard= new Card(Vector2f(10,88), SnowpeaShooterCard);
-    sunflowercard= new Card(Vector2f(10,166), SunFlowerCard);
-    wallnutcard= new Card(Vector2f(10,244), WallnutCard);
+    peashootercard= new Card(Vector2f(10,10), PeaShooterCard, setting);
+    snowpeashootercard= new Card(Vector2f(10,88), SnowpeaShooterCard, setting);
+    sunflowercard= new Card(Vector2f(10,166), SunFlowerCard, setting);
+    wallnutcard= new Card(Vector2f(10,244), WallnutCard, setting);
+    sunsign= new SunSign();
     for(int i=0; i < 9; i++)
         for(int j=0; j < 5; j++)
-            Plants.push_back(new Plant(FARM_COLUMNs[i], FARM_LINES[j]));
+            Plants.push_back(new Plant(FARM_COLUMNs[i], FARM_LINES[j], setting));
 }
 
 Game_Handler::~Game_Handler(){
@@ -22,18 +24,25 @@ Game_Handler::~Game_Handler(){
 }
 
 void Game_Handler::update(Vector2i mousePos){
+    Time sactionelapsed = sunflower_action.getElapsedTime();
+            if(sactionelapsed.asSeconds() >= setting->SunFlower.Cooldown)
+                for(auto p : Plants)
+                    if(p->type == SunFlower && p->action == false){
+                sunflower_action.restart();
+                p->action = true;
+            }
     Time sunelapsed = sunclock.getElapsedTime();
-    if(sunelapsed.asMilliseconds() >= 6000){
+    if(sunelapsed.asMilliseconds() >= 3000){
         sunclock.restart();
         add_sun();
     }
     Time projectileelapsed = projectileclock.getElapsedTime();
-    if(projectileelapsed.asMilliseconds() >= 900){
+    if(projectileelapsed.asSeconds() >= setting->PeaShooter.Cooldown){
         projectileclock.restart();
         add_projectile();
     }
     Time zombieelapsed = zombieclock.getElapsedTime();
-    if(zombieelapsed.asMilliseconds() >= 2000){
+    if(zombieelapsed.asMilliseconds() >= 6000){
         zombieclock.restart();
         add_zombie();
     }
@@ -41,6 +50,7 @@ void Game_Handler::update(Vector2i mousePos){
     clamed_suns = snowpeashootercard ->update(clamed_suns, type == Nothing);   
     clamed_suns = sunflowercard ->update(clamed_suns, type == Nothing);
     clamed_suns = wallnutcard ->update(clamed_suns, type == Nothing);
+    sunsign->update(clamed_suns);
     for(auto s : Suns)
         s->update();
     for(auto p : Plants)
@@ -61,6 +71,7 @@ void Game_Handler::render(RenderWindow &window){
     snowpeashootercard->render(window);
     sunflowercard->render(window);
     wallnutcard->render(window);
+    sunsign->render(window);
     for(auto s : Suns)
         s->render(window);
     for(auto p : Plants)
@@ -72,6 +83,12 @@ void Game_Handler::render(RenderWindow &window){
 }
 
 void Game_Handler::handle_mouse_press(Vector2i mousePos){
+    for(auto p : Plants)
+        if((p->type == SunFlower) && p->action)
+            if(p->handle_mouse_press(mousePos, SunFlower)){
+                p->action = false;
+                clamed_suns += setting->Sun.Interval;
+            }
     for(auto s : Suns)
         clamed_suns = s->handle_mouse_press(mousePos, clamed_suns);
     if(type == Nothing){ 
@@ -106,7 +123,7 @@ bool Game_Handler::check_gameover(){
 }
 
 void Game_Handler::add_sun(){
-    Suns.push_back(new Sun(Vector2f(((rng()%5)*100)+65, 0)));
+    Suns.push_back(new Sun(Vector2f(((rng()%5)*100)+265, 0), setting));
 }
 
 void Game_Handler::add_projectile(){
@@ -123,9 +140,9 @@ void Game_Handler::add_zombie(){
     int i = rand()%2;
     Zombie* z;
     if(i == 1)
-        z = new Zombie(Vector2f(WIDTH, ((rng()%5)*100)+65), Regular);
+        z = new Zombie(Vector2f(WIDTH, ((rng()%5)*100)+65), Gargantuar, setting);
     else
-        z = new Zombie(Vector2f(WIDTH, ((rng()%5)*100)+65), Gargantuar);
+        z = new Zombie(Vector2f(WIDTH, ((rng()%5)*100)+65), Regular, setting);
     Zombies.push_back(z);
 }
 
@@ -163,6 +180,8 @@ void Game_Handler::handle_collision(){
             FloatRect v_rect = v->get_rect();
             if(z_rect.intersects(v_rect)){
                 trashv.push_back(v);
+                if(v->type == Snowpea)
+                    z->reduce_speed();
                 if(!(z->input_damage(v->output_damage())))
                     trashz.push_back(z);
             }
@@ -180,6 +199,7 @@ void Game_Handler::handle_collision(){
 
 void Game_Handler::handle_detection(){
     for(auto p : Plants)
+        if((p->type == PeaShooter)||(p->type == SnowpeaShooter))
         p->action = false;
     for(auto z : Zombies){
         if(z->get_rect().left < 1000)
@@ -225,7 +245,7 @@ void Game_Handler::handle_contention(){
             if(z_rect.intersects(p_rect)&&!((p->type == EmptyPlant)||(p->type == SelectedPlant))){
                 z->action = true;
                 Time zattackelapsed = zombie_attack.getElapsedTime();
-                if(zattackelapsed.asMilliseconds() >= 500){
+                if(zattackelapsed.asSeconds() >= setting->Zombie.Hit_Rate){
                     zombie_attack.restart();
                     p->input_damage(z->output_damage());
                 }

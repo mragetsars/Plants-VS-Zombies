@@ -1,3 +1,5 @@
+#pragma once
+
 #include "global.hpp"
 
 struct ZOMBIE
@@ -27,7 +29,6 @@ struct SUN
 class Setting{
 public:
     Setting();
-    ~Setting();
     SUN Sun;
     PLANT KernelPult;
     PLANT PeaShooter;

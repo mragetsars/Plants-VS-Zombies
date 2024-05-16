@@ -11,13 +11,14 @@ enum Card_Type {
 
 class Card{
 public:
-    Card(Vector2f input_pos, Card_Type input_type);
+    Card(Vector2f input_pos, Card_Type input_type, Setting* s);
     ~Card();
     int update(int colected_suns, bool select_check);
     void render(RenderWindow &window);
     bool handle_mouse_press(Vector2i mousePos);
     bool active;
 private:
+    Setting* setting;
     Card_Type type;
     Texture texture;
     Sprite sprite;
@@ -29,5 +30,5 @@ private:
     bool selected;
     int price;
     void set_card_texture();
-    void set_card_price();
+    void setup();
 };

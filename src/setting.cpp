@@ -21,8 +21,6 @@ Setting::Setting(){
     get_gargantuar_setting(line_temp);
 }
 
-Setting::~Setting(){}
-
 long double Setting::str_to_num(string input)
     {
         long double output;

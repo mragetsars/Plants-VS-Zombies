@@ -1,6 +1,7 @@
 #include "zombie.hpp"
 
-Zombie::Zombie(Vector2f p, Zombie_Type input_type){
+Zombie::Zombie(Vector2f p, Zombie_Type input_type, Setting* s){
+    setting = s;
     type = input_type;
     setup();
     action = false;
@@ -59,17 +60,21 @@ int Zombie::get_line(){
         return 5;   
 }
 
+void Zombie::reduce_speed(){
+    speed = setting->Zombie.Speed/2;
+}
+
 void Zombie::setup(){
     switch (type){
     case (Regular):
-        health = 20;
-        damage = 5;
-        speed = 2;
+        health = setting->Zombie.Health;
+        damage = setting->Zombie.Damage;
+        speed = setting->Zombie.Speed;
         break;
     case (Gargantuar):
-        health = 20;
-        damage = 8;
-        speed = 2;
+        health = setting->Gargantuar.Health;
+        damage = setting->Gargantuar.Damage;
+        speed = setting->Gargantuar.Speed;
         break;
     }
 }
@@ -77,10 +82,10 @@ void Zombie::setup(){
 void Zombie::set_zombie_texture(){
     if(type == Regular){
         if(action){
-            if (!texture.loadFromFile(PICS_PATH + "z_BZombie(eating).png"))
+            if (!texture.loadFromFile(PICS_PATH + "z_AZombie(eating).png"))
                 debug("failed to load zombie texture");
         }else{
-            if (!texture.loadFromFile(PICS_PATH + "z_BZombie.png"))
+            if (!texture.loadFromFile(PICS_PATH + "z_AZombie.png"))
                 debug("failed to load zombie texture");
         }
     }

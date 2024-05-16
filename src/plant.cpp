@@ -1,6 +1,7 @@
 #include "plant.hpp"
 
-Plant::Plant(int x, int y){
+Plant::Plant(int x, int y, Setting* s){
+    setting = s;
     type = EmptyPlant;
     action = false;
     setup();
@@ -56,7 +57,7 @@ Projectile* Plant::get_projectile(){
     else if(type == SnowpeaShooter)
         output_projectile_type = Snowpea;
     Vector2f output_projectile_pos = Vector2f(sprite.getPosition().x + 50, sprite.getPosition().y + 12);
-    return new Projectile(output_projectile_pos, output_projectile_type);
+    return new Projectile(output_projectile_pos, output_projectile_type, setting);
 }
 
 bool Plant::handle_mouse_press(Vector2i mousePos, Plant_Type input_type){
@@ -107,16 +108,16 @@ void Plant::setup(){
         health = 0;
         break;
     case (PeaShooter):
-        health = 40;
+        health = setting->PeaShooter.Health;
         break;
     case (SnowpeaShooter):
-        health = 30;
+        health = setting->SnowpeaShooter.Health;
         break;
     case (SunFlower):
-        health = 30;
+        health = setting->SunFlower.Health;
         break;
     case (Wallnut):
-        health = 200;
+        health = setting->Wallnut.Health;
         break;
     }
 }

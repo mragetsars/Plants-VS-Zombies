@@ -9,7 +9,7 @@ enum Zombie_Type {
 
 class Zombie{
 public:
-    Zombie(Vector2f pos, Zombie_Type input_type);
+    Zombie(Vector2f pos, Zombie_Type input_type, Setting* s);
     ~Zombie();
     void render(RenderWindow &window);
     void update();
@@ -17,8 +17,10 @@ public:
     bool input_damage(int input_damage);
     FloatRect get_rect();
     int get_line();
+    void reduce_speed();
     bool action;
 private:
+    Setting* setting;
     Zombie_Type type;
     int health;
     int damage;

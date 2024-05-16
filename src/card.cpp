@@ -1,12 +1,13 @@
 #include "card.hpp"
 
-Card::Card(Vector2f input_pos, Card_Type input_type){
+Card::Card(Vector2f input_pos, Card_Type input_type, Setting* s){
+    setting = s;
     selected = false;
     active = false;
     type = input_type;
     pos = input_pos;
     set_card_texture();
-    set_card_price();
+    setup();
     IntRect rect;
     rect.top = 0;
     rect.left = 0;
@@ -69,15 +70,15 @@ void Card::set_card_texture(){
             debug("failed to load player texture");
 }
 
-void Card::set_card_price(){
+void Card::setup(){
     if(type == PeaShooterCard)
-        price = 100;
+        price = setting->PeaShooter.Price;
     if(type == SnowpeaShooterCard)
-        price = 175;
+        price = setting->SnowpeaShooter.Price;
     if(type == SunFlowerCard)
-        price = 50;
+        price = setting->SunFlower.Price;
     if(type == WallnutCard)
-        price = 50;
+        price = setting->Wallnut.Price;
 }
 
 bool Card::handle_mouse_press(Vector2i mousePos){

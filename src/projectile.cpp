@@ -1,6 +1,7 @@
 #include "projectile.hpp"
 
-Projectile::Projectile(Vector2f p, Projectile_Type input_type){
+Projectile::Projectile(Vector2f p, Projectile_Type input_type, Setting* s){
+        setting = s;
         type = input_type;
         setup();
         pos = p;
@@ -45,12 +46,12 @@ FloatRect Projectile::get_rect(){
 void Projectile::setup(){
     switch (type){
     case (Pea):
-        damage = 5;
-        speed = 3;
+        damage = setting->PeaShooter.Damage;
+        speed = setting->PeaShooter.Speed;
         break;
     case (Snowpea):
-        damage = 8;
-        speed = 3;
+        damage = setting->SnowpeaShooter.Damage;
+        speed = setting->SnowpeaShooter.Speed;
         break;
     }
 }

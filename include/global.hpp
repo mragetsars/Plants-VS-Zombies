@@ -28,7 +28,7 @@ const int WIDTH = 1400;
 const int HEIGHT = 600;
 const int FRAME_RATE = 60;
 const int FARM_LINES[5] = {90, 190, 290, 390, 490};
-const int FARM_COLUMNs[9] = {260, 340, 430, 500, 580, 660, 740, 820, 900};
+const int FARM_COLUMNs[9] = {260, 340, 430, 505, 580, 660, 740, 820, 900};
 
 const string PICS_PATH = "./files/pics/",
              AUDIO_PATH = "./files/audio/",
@@ -39,8 +39,7 @@ const int plant_animation_rect[6] = {2, 86, 170, 254, 338, 422};
 const int zombie_animation_rect[7] = {3, 55, 107, 159, 211, 263, 315};
 #define debug(x) cout << x << endl, exit(0);
 
-// #include "setting.hpp"
-// Setting setting();
+#include "setting.hpp"
 
 // ZOMBIES:
 // hairMetalGargantuar-20-80-6-5

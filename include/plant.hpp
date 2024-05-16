@@ -15,7 +15,7 @@ enum Plant_Type {
 
 class Plant{
   public:
-    Plant(int x, int y);
+    Plant(int x, int y, Setting* s);
     ~Plant();
     void render(RenderWindow &window);
     void update(Vector2i mousePos);
@@ -26,6 +26,7 @@ class Plant{
     Plant_Type type;
     bool action;
   private:
+    Setting* setting;
     int health;
     void setup();
     Vector2f pos;

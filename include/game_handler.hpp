@@ -21,16 +21,19 @@ public:
     void handle_mouse_press(Vector2i mousePos);
     bool check_gameover();
 private:
+    Setting* setting;
     int clamed_suns;
     Handler_Type type;
     Plant_Type new_plant_type;
     mt19937 rng;
     Clock sunclock, projectileclock, zombieclock;
     Clock zombie_attack;
+    Clock sunflower_action;
     Card* peashootercard;
     Card* snowpeashootercard;
     Card* sunflowercard;
     Card* wallnutcard;
+    SunSign* sunsign;
     vector < Sun* > Suns;
     vector < Plant* > Plants;
     vector < Projectile* > Projectiles;
