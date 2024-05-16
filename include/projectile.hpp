@@ -4,7 +4,7 @@
 
 enum Projectile_Type {
   Pea,
-  Snowpea,
+  Icepea,
 };
 
 class Projectile{

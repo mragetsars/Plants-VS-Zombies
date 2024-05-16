@@ -41,7 +41,7 @@ void Projectile::set_projectile_texture(){
             debug("failed to load player texture");
         }
     }
-    if(type == Snowpea){
+    if(type == Icepea){
         if (!texture.loadFromFile(PICS_PATH + "Snowpea.png")) {
             debug("failed to load player texture");
         }

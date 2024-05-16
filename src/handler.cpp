@@ -1,15 +1,10 @@
 #include "handler.hpp"
 
-Handler::Handler (){
-    peashootercard= new Card(Vector2f(10,10), PeaShooterCard);
-    snowpeashootercard= new Card(Vector2f(10,88), SnowpeaShooterCard);
-    sunflowercard= new Card(Vector2f(10,166), SunFlowerCard);
-    for(int i=0; i < 9; i++)
-        for(int j=0; j < 5; j++)
-            Plants.push_back(new Plant(FARM_COLUMNs[i], FARM_LINES[j]));
+PeashooterHandler::PeashooterHandler (Shooter* p){
+    player = p;
 }
 
-Handler::~Handler(){
+PeashooterHandler::~PeashooterHandler(){
     for(auto p : projectiles){
         delete p;
     }
@@ -18,7 +13,7 @@ Handler::~Handler(){
     }
 }
 
-void Handler::update(Vector2i pos){
+void PeashooterHandler::update(){
     Time elapsed = clock.getElapsedTime();
     if(elapsed.asMilliseconds() >= 600){
         clock.restart();
@@ -29,17 +24,17 @@ void Handler::update(Vector2i pos){
         zombie_clock.restart();
         add_zombie();
     }
-    for(auto p : Plants)
-        p->update(pos);
-    for(auto p : projectiles)
+    for(auto p : projectiles){
         p->update();
-    for(auto z : zombies)
+    }
+    for(auto z : zombies){
         z->update();
+    }
     delete_out_of_bounds();
     handle_collision();
 }
 
-void Handler::delete_out_of_bounds(){
+void PeashooterHandler::delete_out_of_bounds(){
     vector <Projectile*> trash;
     for(auto p : projectiles){
         if(p->is_out()){
@@ -53,29 +48,21 @@ void Handler::delete_out_of_bounds(){
     }
 }
 
-void Handler::render(RenderWindow &window){
-    peashootercard->render(window);
-    snowpeashootercard->render(window);
-    sunflowercard->render(window);
-    for(auto p : Plants)
+void PeashooterHandler::render(RenderWindow &window){
+    for(auto p : projectiles){
         p->render(window);
-    for(auto v : projectiles)
-        v->render(window);
-    for(auto z : zombies)
+    }
+    for(auto z : zombies){
         z->render(window);
+    }
 }
 
-void Handler::add_projectile(){
-    Projectile* p_temp;
-    for(auto p : Plants){
-        if(!((p->type == EmptyPlant) || (p->type == SelectedPlant))){
-            p_temp = new Projectile(p->get_projectile_pos(), p->get_projectile_type());
-            projectiles.push_back(p_temp);
-        }
-    }
+void PeashooterHandler::add_projectile(){
+    Projectile* p = new Projectile(player->get_projectile_pos(), Icepea);
+    projectiles.push_back(p);
 }   
 
-void Handler::add_zombie(){
+void PeashooterHandler::add_zombie(){
     int i = rand()%2;
     Zombie* z;
     if(i == 1)
@@ -85,7 +72,7 @@ void Handler::add_zombie(){
     zombies.push_back(z);
 }
 
-void Handler::handle_collision(){
+void PeashooterHandler::handle_collision(){
     vector <Projectile*> trashp;
     vector <Zombie*> trashz;
     for(auto p : projectiles){
@@ -106,14 +93,4 @@ void Handler::handle_collision(){
         zombies.erase(remove(zombies.begin(), zombies.end(), z), zombies.end());   
         delete z;
     }
-}
-
-
-void Handler::handle_mouse_press(Vector2i pos){
-    for(auto p : Plants)
-        p->handle_mouse_press(pos, SnowpeaShooter);
-}
-void Handler::handle_mouse_release(Vector2i pos){
-    for(auto p : Plants)
-        p->handle_mouse_release(pos);
 }

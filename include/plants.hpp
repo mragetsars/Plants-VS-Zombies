@@ -11,28 +11,31 @@ enum Plant_Type {
   SunFlower,
 };
 
-class Plant{
+class Shooter{
 public:
-    Plant(int x, int y);
-    ~Plant();
+    Shooter(int x, int y, Plant_Type input_type);
+    ~Shooter();
     void render(RenderWindow &window);
     void update(Vector2i pos);
-    void handle_mouse_press(Vector2i pos, Plant_Type input_type);
+    void handle_mouse_press(Vector2i pos);
     void handle_mouse_release(Vector2i mousePos);
     Vector2f get_projectile_pos();
-    Projectile_Type get_projectile_type();
     vector < Projectile* > projectiles;
-    Plant_Type type;
 private:
-Clock projectileclock;
+    Clock projectileclock;
     Clock animationclock;
+    Plant_Type type;
     Texture texture;
     Sprite sprite;
     Vector2f pos;
-    int abnormal_animation_rect[3] = {2, 86, 170};
-    int cur_rect = 2;
+    int animation_rect[3] = {2, 86, 170};
+    int cur_rect = 1;
+    bool is_tagged = false;
     bool is_fixed = false;
     void fix_position();
+    void add_projectile();
+    void delete_out_of_bounds();
     void set_plant_texture();
     void handel_animation();
+    void handel_projectile();
 };

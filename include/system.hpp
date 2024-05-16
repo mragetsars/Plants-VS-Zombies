@@ -1,10 +1,10 @@
 #pragma once
 
 #include "global.hpp"
-// #include "plants.hpp"
-// #include "projectile.hpp"
+#include "plants.hpp"
+#include "projectile.hpp"
 #include "handler.hpp"
-// #include "card.hpp"
+#include "management.hpp"
 
 enum State {
   IN_GAME,
@@ -24,7 +24,9 @@ public:
 
 private:
   State state;
-  Handler* handler;
+  PeashooterHandler* handler1;
+  // PeashooterHandler* handler2;
+  vector<Shooter*> peashooters;
   Texture backgroundTexture;
   Sprite backgroundSprite;
   Music music;
