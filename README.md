@@ -2,7 +2,7 @@
 
 > **Advanced Programming - University of Tehran - Department of Electrical & Computer Engineering**
 
-![Language](https://img.shields.io/badge/Language-C++20-orange) ![Graphics Library](https://img.shields.io/badge/Graphics%20Library-SFML-blue) ![Status](https://img.shields.io/badge/Status-Completed-success)
+![Language](https://img.shields.io/badge/Language-C++20-orange) ![Graphics Library](https://img.shields.io/badge/Graphics%20Library-SFML-blue) ![Status](https://img.shields.io/badge/Status-In%20Progress-yellow)
 
 ## 📌 Overview
 
@@ -55,12 +55,32 @@ make
 ## 📂 Project Structure
 ```
 Plants-VS-Zombies/
-│── files/      # Media assets (images, sounds, fonts)
-│── src/        # Source code (.cpp files)
-│── include/    # Header files (.hpp files)
-│── obj/        # Compiled object files (.o files)
-│── Makefile    # Build configuration
-│── pvz.out     # Compiled executable
+├── src/                     # Implementation files (.cpp)
+│   ├── main.cpp             # Game entry point
+│   ├── game_handler.cpp     # Core game engine and event loop
+│   ├── plant.cpp            # Plant behaviors and mechanics
+│   ├── zombie.cpp           # Zombie AI and movement logic
+│   └── ...                  # Other module.cpp implementations
+├── include/                 # Header files (.hpp)
+│   ├── global.hpp           # Constant values and game settings
+│   ├── game_handler.hpp     # Engine definitions
+│   ├── plant.hpp            # Plant class hierarchy
+│   ├── zombie.hpp           # Enemy class definitions
+│   └── ...                  # Other module.hpp headers
+├── files/                   # Multimedia assets (Game Data)
+│   ├── pics/                # Sprites & Textures (Organized by prefix)
+│   │   ├── c_*.png          # Cards UI elements
+│   │   ├── p_*.png          # Plants (Idle/Attack/Glow)
+│   │   ├── z_*.png          # Zombies (Walking/Eating/Dying)
+│   │   ├── v_*.png          # Projectiles and VFX (Peas, Sun, etc.)
+│   │   └── g_*.png          # Backgrounds and Screen overlays
+│   ├── audio/               # Background music (bg.ogg)
+│   ├── fonts/               # Game typography (SunSignFont.otf)
+│   └── screenshots/         # README preview images
+├── obj/                     # Compiled object files (.o)
+├── Makefile                 # Build system configuration
+├── Settings                 # Game balance and config parameters
+└── pvz.out                  # Compiled executable (Linux)
 ```
 
 
