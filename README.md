@@ -52,8 +52,11 @@ make
 ```
 
 
-## 📂 Project Structure
-```
+## 📂 Repository Structure
+
+The project is organized as follows:
+
+```text
 Plants-VS-Zombies/
 ├── src/                     # Implementation files (.cpp)
 │   ├── main.cpp             # Game entry point
